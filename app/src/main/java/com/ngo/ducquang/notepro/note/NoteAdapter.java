@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -107,6 +108,12 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ButterKnife.bind(this, itemView);
             rlNoteItem.setOnLongClickListener(this);
             rlNoteItem.setOnClickListener(this);
+
+            cbFavorite.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                NoteModel noteModel = dataList.get(getAdapterPosition());
+                noteModel.setFavorite(isChecked);
+                databaseRoom.noteDao().update(noteModel);
+            });
         }
 
         public void binding(NoteModel model)
@@ -115,9 +122,8 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             content.setText(model.getContent());
             String timeString = ManagerTime.convertToMonthDayYearHourMinuteFormat(model.getCreated());
             date.setText(timeString);
+            cbFavorite.setChecked(model.isFavorite());
         }
-
-
 
         @Override
         public boolean onLongClick(View v) {
@@ -146,6 +152,7 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         @Override
         public void onClick(View v) {
             CreateNoteFragment createNoteFragment = new CreateNoteFragment();
+            createNoteFragment.setPosition(getAdapterPosition());
             createNoteFragment.setNoteModel(dataList.get(getAdapterPosition()));
             createNoteFragment.setUpdate(true);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -154,5 +161,18 @@ public class NoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
+    }
+
+    public void addStore(NoteModel userStore)
+    {
+        dataList.add(userStore);
+        notifyItemInserted(0);
+        notifyDataSetChanged();
+    }
+
+    public void updateItem(NoteModel userStore, int position)
+    {
+        dataList.set(position, userStore);
+        notifyItemChanged(position);
     }
 }

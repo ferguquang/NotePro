@@ -13,7 +13,7 @@
         android:background="@color/colorBackground"
         android:padding="16dp"
         android:textSize="18sp"
-        android:text="Danh sách ghi chú"
+        android:text="@string/listNote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

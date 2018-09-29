@@ -20,7 +20,9 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 import com.ngo.ducquang.notepro.base.DatabaseRoom;
 import com.ngo.ducquang.notepro.base.EventBusManager;
 import com.ngo.ducquang.notepro.base.baseView.BaseActivity;
@@ -43,13 +45,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
     @BindView(R.id.title) TextView title;
     @BindView(R.id.recyclerViewListNote) RecyclerView recyclerViewListNote;
     @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.adView) AdView adView;
 
     private NoteAdapter adapter;
     private List<NoteModel> dataList = new ArrayList<>();
 
     private DatabaseRoom databaseRoom;
-
-    private InterstitialAd mInterstitialAd;
 
     private SubcriberMainActivity subcriberMainActivity = new SubcriberMainActivity()
     {
@@ -67,7 +68,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     protected void initView() {
-        title.setText("GHI CHÚ");
+        title.setText(getString(R.string.noteTitle));
         databaseRoom = DatabaseRoom.getAppDatabase(getApplicationContext());
 
         fab.setOnClickListener(this);
@@ -75,13 +76,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
         dataList = databaseRoom.noteDao().getAll();
         initData();
 
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getString(R.string.idAdmob));
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
-
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-        }
+        MobileAds.initialize(getApplicationContext(), getString(R.string.idAdmob));
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
     }
 
     @Override
@@ -129,14 +126,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
     }
 
 
-    private void handleCreateOrUpdateNote(EventCreateOrUpdateNote event) {
-        if (event.isAdd())
+    private void handleCreateOrUpdateNote(EventCreateOrUpdateNote event)
+    {
+        if (event.isUpdate())
         {
-
+            adapter.updateItem(event.getNoteModel(), event.getPosition());
         }
         else
         {
-
+            adapter.addStore(event.getNoteModel());
         }
     }
 }

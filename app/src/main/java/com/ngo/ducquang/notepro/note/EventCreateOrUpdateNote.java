@@ -6,11 +6,21 @@ package com.ngo.ducquang.notepro.note;
 
 public class EventCreateOrUpdateNote {
     private NoteModel noteModel;
-    private boolean isAdd = true;
+    private boolean isUpdate = true;
+    private int position = -1;
 
-    public EventCreateOrUpdateNote(NoteModel noteModel, boolean isAdd) {
+
+    public EventCreateOrUpdateNote(NoteModel noteModel, boolean isUpdate) {
         this.noteModel = noteModel;
-        this.isAdd = isAdd;
+        this.isUpdate = isUpdate;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 
     public NoteModel getNoteModel() {
@@ -21,11 +31,11 @@ public class EventCreateOrUpdateNote {
         this.noteModel = noteModel;
     }
 
-    public boolean isAdd() {
-        return isAdd;
+    public boolean isUpdate() {
+        return isUpdate;
     }
 
-    public void setAdd(boolean add) {
-        isAdd = add;
+    public void setUpdate(boolean update) {
+        isUpdate = update;
     }
 }

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -28,6 +29,7 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.ngo.ducquang.notepro.base.DatabaseRoom;
 import com.ngo.ducquang.notepro.base.EventBusManager;
+import com.ngo.ducquang.notepro.base.GlobalVariables;
 import com.ngo.ducquang.notepro.base.KeyboardUtils;
 import com.ngo.ducquang.notepro.base.ManagerTime;
 import com.ngo.ducquang.notepro.base.baseView.BaseFragment;
@@ -37,6 +39,7 @@ import com.ngo.ducquang.notepro.note.EventCreateOrUpdateNote;
 import com.ngo.ducquang.notepro.note.NoteModel;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.logging.LogManager;
 
 import butterknife.BindView;
@@ -59,12 +62,18 @@ public class CreateNoteFragment extends BaseFragment implements View.OnClickList
     @BindView(R.id.nameNote) EditText nameNote;
     @BindView(R.id.fabDone) FloatingActionButton fabDone;
     @BindView(R.id.imgMic) ImageView imgMic;
+    @BindView(R.id.tts) ImageView tts;
     @BindView(R.id.adView) AdView adView;
-
-    private boolean checkChange = false;
 
     private NoteModel noteModel;
     private boolean isUpdate = false;
+    int position = -1;
+
+    TextToSpeech t1;
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
 
     @Override
     protected int getContentView() {
@@ -75,28 +84,10 @@ public class CreateNoteFragment extends BaseFragment implements View.OnClickList
     @Override
     protected void initView(View view)
     {
-        title.setText("Tạo mới ghi chú");
+        title.setText(getString(R.string.createNewNote));
         toolBar.setNavigationIcon(R.drawable.icon_asset_back);
         toolBar.setNavigationOnClickListener(v -> {
-            if (checkChange)
-            {
-                ConfirmDialog.initialize("Bạn có muốn lưu thay đổi này không?", new OnConfirmDialogAction() {
-                    @Override
-                    public void onCancel() {}
-
-                    @Override
-                    public void onAccept()
-                    {
-
-
-                        getActivity().onBackPressed();
-                    }
-                }).show(getFragmentManager(), "");
-            }
-            else
-            {
-                getActivity().onBackPressed();
-            }
+            getActivity().onBackPressed();
         });
 
         long time= System.currentTimeMillis();
@@ -107,19 +98,6 @@ public class CreateNoteFragment extends BaseFragment implements View.OnClickList
         fabDone.setOnClickListener(this);
         imgMic.setOnClickListener(this);
 
-        contentNote.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                checkChange = true;
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
-
         if (isUpdate && noteModel != null)
         {
             timeCreated.setText(ManagerTime.convertToMonthDayYearHourMinuteFormat(noteModel.getCreated()));
@@ -128,10 +106,19 @@ public class CreateNoteFragment extends BaseFragment implements View.OnClickList
         }
 
         MobileAds.initialize(getContext(), getString(R.string.idAdmob));
-
         AdRequest adRequest = new AdRequest.Builder().build();
-
         adView.loadAd(adRequest);
+
+        t1 = new TextToSpeech(getContext(), status -> {
+            if(status != TextToSpeech.ERROR) {
+                t1.setLanguage(Locale.getDefault());
+            }
+        });
+
+        tts.setOnClickListener(v -> {
+            String toSpeak = contentNote.getText().toString();
+            t1.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+        });
     }
 
     @SuppressLint("SetTextI18n")
@@ -184,30 +171,34 @@ public class CreateNoteFragment extends BaseFragment implements View.OnClickList
                 String content = contentNote.getText().toString();
                 long created = System.currentTimeMillis();
 
-                NoteModel noteModel = new NoteModel();
-                noteModel.setName(name);
-                noteModel.setContent(content);
-
                 if (isUpdate)
                 {
+                    noteModel.setName(name);
+                    noteModel.setContent(content);
                     noteModel.setEditFinal(created);
                 }
                 else
                 {
+                    noteModel = new NoteModel();
+                    noteModel.setName(name);
+                    noteModel.setContent(content);
                     noteModel.setCreated(created);
                 }
 
-                EventBusManager.instance().post(new EventCreateOrUpdateNote(noteModel, true));
                 if (isUpdate)
                 {
+                    EventCreateOrUpdateNote eventCreateOrUpdateNote = new EventCreateOrUpdateNote(noteModel, true);
+                    eventCreateOrUpdateNote.setPosition(position);
+                    EventBusManager.instance().post(eventCreateOrUpdateNote);
                     DatabaseRoom.getAppDatabase(getContext()).noteDao().update(noteModel);
-                    showToast("Chỉnh sửa thành công");
+                    showToast(getString(R.string.editSuccess), GlobalVariables.TOAST_SUCCESS);
                 }
                 else
                 {
+                    EventBusManager.instance().post(new EventCreateOrUpdateNote(noteModel, false));
                     DatabaseRoom.getAppDatabase(getContext()).noteDao().insert(noteModel);
 
-                    showToast("Tạo mới thành công");
+                    showToast(getString(R.string.createSuccess), GlobalVariables.TOAST_SUCCESS);
                 }
 
                 getActivity().onBackPressed();
@@ -217,7 +208,7 @@ public class CreateNoteFragment extends BaseFragment implements View.OnClickList
             {
                 Intent intentVoice = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                 intentVoice.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-                intentVoice.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "vi-VN");
+                intentVoice.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
                 intentVoice.putExtra(RecognizerIntent.EXTRA_PROMPT, getResources().getString(R.string.speakNow));
 
                 try

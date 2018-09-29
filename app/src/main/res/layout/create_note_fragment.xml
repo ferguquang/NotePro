@@ -35,18 +35,29 @@
                 android:layout_height="wrap_content" />
 
             <ImageView
-                android:id="@+id/imgMic"
-                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:id="@+id/imgMic"
+                android:layout_toLeftOf="@+id/tts"
                 app:srcCompat="@drawable/icon_asset_mic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/tts"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_tts"
+                android:layout_width="24dp"
+                android:layout_height="24dp" />
 
         </RelativeLayout>
 
         <EditText
             android:id="@+id/nameNote"
             android:hint="Tên ghi chú"
+            android:textColor="@color/black"
+            android:textStyle="bold"
             android:background="@color/transparent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

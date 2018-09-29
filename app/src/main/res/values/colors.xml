@@ -33,5 +33,6 @@
     <color name="textColorEdt">#9fa2a4</color>
     <color name="colorBackground">#f1f1f1</color>
     <color name="colorIconDongLV">#757575</color>
+    <color name="red">#ff0000</color>
 
 </resources>
