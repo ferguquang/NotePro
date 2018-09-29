@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">NotePro</string>
+    <string name="action_settings">Settings</string>
+    <string name="speakNow">Mời bạn nói</string>
+    <string name="search">Tìm kiếm</string>
+    <string name="idAdmob">ca-app-pub-2882465873329027/5361534631</string>
+    <string name="idAdmob2">ca-app-pub-2882465873329027~6274450614</string>
+</resources>

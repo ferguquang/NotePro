@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/rlNoteItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_toLeftOf="@+id/cbFavorite"
+            android:layout_alignParentLeft="true"
+            android:orientation="vertical"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textSize="16sp"
+                android:id="@+id/name"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:text="tên note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/date"
+                    android:textColor="@color/colorIconDongLV"
+                    android:text="ngày"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:textColor="@color/colorIconDongLV"
+                    android:id="@+id/content"
+                    android:layout_marginLeft="4dp"
+                    android:text="content"
+                    android:ellipsize="marquee"
+                    android:singleLine="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <CheckBox
+            android:background="@drawable/ic_like"
+            android:button="@null"
+            android:checked="false"
+            android:stateListAnimator="@animator/anim_scale"
+            android:layout_marginRight="8dp"
+            android:id="@+id/cbFavorite"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_marginHorizontal="16dp"
+        android:background="@color/colorBackground"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+</LinearLayout>

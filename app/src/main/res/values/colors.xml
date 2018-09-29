@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="icon_color">#ffbc02</color>
+    <color name="colorPrimary">#29a5ff</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <!--<color name="colorAccent">#017196</color>-->
+    <!--<color name="colorAccent">#FF4081</color>-->
+    <color name="colorAccent">#29a5ff</color>
+
+    <color name="disable">#dddddd</color>
+    <color name="pressed">#00a1de</color>
+    <!--<color name="normal">#007152</color>-->
+    <color name="normal">#017196</color>
+
+    <color name="black">#000000</color>
+    <color name="blackTextMenu">#272727</color>
+    <color name="white">#FFFFFF</color>
+    <color name="gray">#d3d3d3</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="app">#0081b2</color>
+
+    <color name="error">#f31f3d</color>
+    <color name="notify">#f31f3d</color>
+
+    <color name="statusBar">#017196</color>
+
+    <color name="light">#edecec</color>
+    <color name="colorBorder">#ebebeb</color>
+
+    <color name="backgroundCallWave">#4cccffff</color>
+
+    <color name="textColorEdt">#9fa2a4</color>
+    <color name="colorBackground">#f1f1f1</color>
+    <color name="colorIconDongLV">#757575</color>
+
+</resources>
