@@ -16,7 +16,11 @@
 
         <meta-data
             android:name="com.google.android.gms.ads.com.ngo.ducquang.notepro"
-            android:value="@string/idAdmob"/>
+            android:value="@string/idAdmob4"/>
+
+        <!--<meta-data-->
+            <!--android:name="com.google.android.gms.ads.com.ngo.ducquang.notepro"-->
+            <!--android:value="@string/idAdmob3"/>-->
         <!--<meta-data-->
             <!--android:name="com.google.android.gms.ads.com.ngo.ducquang.notepro"-->
             <!--android:value="@string/idAdmob2"/>-->

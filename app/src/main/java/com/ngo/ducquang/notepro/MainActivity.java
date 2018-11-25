@@ -19,6 +19,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
@@ -51,6 +52,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
     private List<NoteModel> dataList = new ArrayList<>();
 
     private DatabaseRoom databaseRoom;
+    private InterstitialAd mInterstitialAd;
 
     private SubcriberMainActivity subcriberMainActivity = new SubcriberMainActivity()
     {
@@ -76,9 +78,42 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
         dataList = databaseRoom.noteDao().getAll();
         initData();
 
-        MobileAds.initialize(getApplicationContext(), getString(R.string.idAdmob));
+        MobileAds.initialize(getApplicationContext(), getString(R.string.idAdmob4));
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
+
+//        mInterstitialAd = new InterstitialAd(getApplicationContext());
+//        mInterstitialAd.setAdUnitId(getString(R.string.idAdmob3));
+//        mInterstitialAd.setAdListener(new AdListener() {
+//            @Override
+//            public void onAdLoaded() {
+//                super.onAdLoaded();
+//                mInterstitialAd.show();
+//            }
+//
+//            @Override
+//            public void onAdOpened() {
+//                super.onAdOpened();
+//            }
+//
+//            @Override
+//            public void onAdLeftApplication() {
+//                super.onAdLeftApplication();
+//            }
+//
+//            @Override
+//            public void onAdFailedToLoad(int i) {
+//                super.onAdFailedToLoad(i);
+//            }
+//
+//            @Override
+//            public void onAdClosed() {
+//                super.onAdClosed();
+//            }
+//        });
+//
+//        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
     }
 
     @Override
@@ -120,6 +155,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
                 fragmentTransaction.add(android.R.id.content, createNewCouponFragment, "fragment");
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+
+
+//                if (mInterstitialAd.isLoaded()) {
+//                    mInterstitialAd.show();
+//
+//                } else {
+//                    Log.d("TAG", "The interstitial wasn't loaded yet.");
+//                }
+
                 break;
             }
         }

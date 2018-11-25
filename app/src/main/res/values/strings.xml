@@ -5,6 +5,8 @@
     <string name="search">Tìm kiếm</string>
     <string name="idAdmob" translatable="false">ca-app-pub-2882465873329027/5361534631</string>
     <string name="idAdmob2" translatable="false">ca-app-pub-2882465873329027~6274450614</string>
+    <string name="idAdmob3" translatable="false">ca-app-pub-2882465873329027~5680505939</string>
+    <string name="idAdmob4" translatable="false">ca-app-pub-2882465873329027/3469221664</string>
     <string name="noteTitle">Ghi chú</string>
     <string name="createNewNote">Tạo ghi chú mới</string>
     <string name="listNote">Danh sách ghi chú</string>

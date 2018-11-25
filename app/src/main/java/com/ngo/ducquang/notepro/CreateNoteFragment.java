@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.ngo.ducquang.notepro.base.DatabaseRoom;
 import com.ngo.ducquang.notepro.base.EventBusManager;
@@ -71,6 +73,8 @@ public class CreateNoteFragment extends BaseFragment implements View.OnClickList
 
     TextToSpeech t1;
 
+    private InterstitialAd mInterstitialAd;
+
     public void setPosition(int position) {
         this.position = position;
     }
@@ -105,19 +109,35 @@ public class CreateNoteFragment extends BaseFragment implements View.OnClickList
             nameNote.setText(noteModel.getName());
         }
 
-        MobileAds.initialize(getContext(), getString(R.string.idAdmob));
+        MobileAds.initialize(getContext(), getString(R.string.idAdmob4));
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
+
+//        MobileAds.initialize(getContext(), getString(R.string.idAdmob3));
+
+//        mInterstitialAd = new InterstitialAd(getContext());
+//        mInterstitialAd.setAdUnitId(getString(R.string.idAdmob3));
+//        mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
         t1 = new TextToSpeech(getContext(), status -> {
             if(status != TextToSpeech.ERROR) {
                 t1.setLanguage(Locale.getDefault());
+//                if (mInterstitialAd.isLoaded()) {
+//                    mInterstitialAd.show();
+//                } else {
+//                    Log.d("TAG", "The interstitial wasn't loaded yet.");
+//                }
             }
         });
 
         tts.setOnClickListener(v -> {
             String toSpeak = contentNote.getText().toString();
             t1.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+//            if (mInterstitialAd.isLoaded()) {
+//                mInterstitialAd.show();
+//            } else {
+//                Log.d("TAG", "The interstitial wasn't loaded yet.");
+//            }
         });
     }
 
@@ -200,6 +220,11 @@ public class CreateNoteFragment extends BaseFragment implements View.OnClickList
 
                     showToast(getString(R.string.createSuccess), GlobalVariables.TOAST_SUCCESS);
                 }
+//                if (mInterstitialAd.isLoaded()) {
+//                    mInterstitialAd.show();
+//                } else {
+//                    Log.d("TAG", "The interstitial wasn't loaded yet.");
+//                }
 
                 getActivity().onBackPressed();
                 break;
